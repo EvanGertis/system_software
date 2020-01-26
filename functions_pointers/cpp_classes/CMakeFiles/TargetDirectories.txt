@@ -1,0 +1,3 @@
+/home/ubuntu/development/functions_pointers/cpp_classes/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/development/functions_pointers/cpp_classes/CMakeFiles/main.dir
+/home/ubuntu/development/functions_pointers/cpp_classes/CMakeFiles/edit_cache.dir

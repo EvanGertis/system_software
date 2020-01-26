@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ubuntu/development/functions_pointers/cpp_classes/main.cpp
+rectangle.h
+/home/ubuntu/development/functions_pointers/cpp_classes/rectangle.h
+
+/home/ubuntu/development/functions_pointers/cpp_classes/rectangle.cpp
+rectangle.h
+/home/ubuntu/development/functions_pointers/cpp_classes/rectangle.h
+
+/home/ubuntu/development/functions_pointers/cpp_classes/rectangle.h
+stdio.h
+-
+
