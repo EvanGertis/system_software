@@ -1,0 +1,3 @@
+all: prog
+prog: swappy.c
+	gcc -o prog swappy.c
