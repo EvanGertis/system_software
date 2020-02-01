@@ -1,0 +1,3 @@
+all: prog
+prog: checky.c
+	gcc -g -o prog checky.c
