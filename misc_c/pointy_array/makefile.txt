@@ -1,0 +1,3 @@
+all: pointy_array
+pointy_array: pointy_array.c
+	gcc -o point_array pointy_array.c
