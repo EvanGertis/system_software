@@ -1,0 +1,3 @@
+all: prog
+prog: set.cpp
+	g++ -g -o prog set.cpp
