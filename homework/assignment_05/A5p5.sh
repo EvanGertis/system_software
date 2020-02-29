@@ -13,9 +13,9 @@ start=1
 end=$1
 while [ $start -lt $end ] ; 
 do
-	if [ ! $((end % 2)) -eq 0 ] ; then
-		echo -n " $end"
+	if [ ! $((start % 2)) -eq 0 ] ; then
+		echo -n " $start"
 	fi
-	end=$((end-1))
+	start=$((start+1))
 done
 exit 0
