@@ -18,4 +18,4 @@ do
 	fi
 	end=$((end-1))
 done
-echo ""
+exit 0
