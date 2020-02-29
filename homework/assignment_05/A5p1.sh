@@ -1,4 +1,16 @@
 #!/bin/bash
+if [ "$#" -ne 1 ] ; then
+   echo "ERROR: ARGUMENT COUNT"
+   echo "usage: ./A5p1.sh <dir>"   
+   exit 1
+fi 
+
+if [ ! -d $1 ] ; then
+	echo "ERROR: INVALID PARAMETER TYPE"
+       	echo "usage: ./A5p1.sh <dir>"
+	exit 1
+fi
+
 fileCount=0
 directoryCount=0
 executableCount=0
@@ -16,6 +28,6 @@ do
 		fi
 	fi
 done
-echo "Number of executable files in <dir>: $executableCount";
-echo "Number of non-executable files in <dir>: $fileCount";
-echo "Number of subdirectories in <dir>: $directoryCount";
+echo "Number of executable files in $1: $executableCount";
+echo "Number of non-executable files in $1: $fileCount";
+echo "Number of subdirectories in $1: $directoryCount";
