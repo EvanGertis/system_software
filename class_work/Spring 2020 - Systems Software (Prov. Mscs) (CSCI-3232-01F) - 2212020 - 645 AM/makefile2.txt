@@ -1,0 +1,7 @@
+all: main test_array_and_pointer
+
+main: main.c a.c
+	gcc main.c a.c -o main
+
+test_array_and_pointer: test_array_and_pointer.c
+	gcc test_array_and_pointer.c -o test_array_and_pointer

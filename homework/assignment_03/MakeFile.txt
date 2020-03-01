@@ -1,0 +1,3 @@
+all: main
+main: mysquare.c myMain.c
+	gcc -o main myMain.c

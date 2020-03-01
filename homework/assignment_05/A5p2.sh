@@ -1,13 +1,13 @@
 #!/bin/bash
 if [ "$#" -ne 1 ] ; then
 	echo "ERROR: INVALID PARAMETER COUNT"
-	echo "usage: ./A5p1.sh <int>"
+	echo "usage: $0 <int>"
 	exit 1
 fi
 
 if ! [[ "$1" =~ ^[0-9]+$ ]]; then
 	echo "ERROR: INVALID PARAMETER TYPE"
-	echo "usage: ./A5p2.sh <int>"
+	echo "usage: $0 <int>"
 	exit 1
 fi 
 number=$1

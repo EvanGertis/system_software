@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ "$#" -ne 1 ] ; then
    echo "ERROR: ARGUMENT COUNT"
-   echo "usage: ./A5p1.sh <dir>"   
+   echo "usage: $0 <dir>"   
    exit 1
 fi 
 
