@@ -8,9 +8,9 @@ do
         while [ $j -lt 6 ] ;
         do
                 echo "$i*$j=$((i*j))"
-                j=$((j+1))
+                let j++
         done
-        i=$((i+1))
+        let i++
 done
 }
 

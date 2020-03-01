@@ -22,6 +22,6 @@ do
 	if [ ! $((start % 2)) -eq 0 ] ; then
 		echo -n " $start"
 	fi
-	start=$((start+1))
+	let start++
 done
 exit 0

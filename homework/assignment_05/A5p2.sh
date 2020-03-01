@@ -15,7 +15,7 @@ count=0
 while [ $number -gt 1 ]
 do
 	echo -n "$number "
-	count=$((count+1))
+	let count++
 	if [ $((number % 2)) -ne 0 ] ; then
 		number=$(((3*number+1)/2))
 	else
