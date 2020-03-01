@@ -18,13 +18,13 @@ executableCount=0
 for entry in "$1"/*
 do
 	if [ -d "$entry" ] ; then 
-		directoryCount=$((directoryCount+1));
+		let directoryCount++;
 	fi
 	if [ -f "$entry" ] ; then
 		if [ -x "$entry" ] ; then 
-			executableCount=$((executableCount+1));
+			let executableCount++;
 		else
-			fileCount=$((fileCount+1));
+			let fileCount++;
 		fi
 	fi
 done
