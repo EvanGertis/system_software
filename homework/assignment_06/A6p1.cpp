@@ -1,48 +1,53 @@
-#include <stdio.h>
 #include <pthread.h>
-#include <assert.h>
-#include <cstdlib>
 #include <iostream>
+#include <cstdlib>
+#include <exception>
 
-void *proc(void *arg)
-{
-
+void *proc(void *arg){
+	int *integer = (int *)arg;
+	std::cout << "now printing " << *integer << std::endl;
 }
 
-struct subString{
-	char * buffer;
-	int size;
-};
+void printUsgae(char * programName){
+	std::cout << "usage: " << programName << " <int> " << std::endl;
+}
 
+bool isValidArgument(int n){
+	return n >= 2 && n <= 6 ? true : false;
+}
 
 int main(int argc, char * argv[]){
+	int n = 0;
 
 	if(argc != 2){
-		std::cout << "usage: " << argv[0] << "<int>" << std::endl;
+		printUsgae(argv[0]);
 		return 0;
 	}
 
-	char randomString[60];
-	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    for (int i = 0; i < 60; ++i) {
-        randomString[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
-    }
-
-	for(int i=0; i < sizeof(randomString)/sizeof(char); ++i)
-		std::cout << randomString[i];
-	std::cout << std::endl;
-	
 	try{
-		int n = atoi(argv[1]);
-		for(int i=0; i < n; i++){
-			for(int j=((sizeof(randomString)/n)*i); j < ((sizeof(randomString)/n)*i + sizeof(randomString)/n); j++)
-				std::cout << randomString[j];
-			std::cout << std::endl;
-		}	
-	}
-	catch(std::exception e){
+		n = atoi(argv[1]);
+
+	}catch(std::exception e){
 		std::cout << e.what() << std::endl;
 	}
+
+	if(!isValidArgument(n)){
+		printUsgae(argv[0]);
+		return 0;
+	}
+	
+	pthread_t id[n];
+	int r[n];
+
+	for(int i=0; i < n; i++){
+		int * value = (int *)malloc(sizeof(int));
+		*value = i;
+		r[i] = pthread_create( &id[i], NULL, proc, (void*) value);
+	}
+	
+	for(int i=0; i < n; i++){
+		pthread_join(id[i], NULL);	
+	}
+
 	return 0;
 }
