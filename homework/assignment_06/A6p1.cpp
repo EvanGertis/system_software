@@ -1,11 +1,19 @@
 #include <pthread.h>
 #include <iostream>
-#include <cstdlib>
 #include <exception>
-#include <string>
+#include <string> 
+#include <stdlib.h> 
+#include <string.h>
+#include <stdio.h>
+#include <list>
+struct args{
+	int size;
+	char * substring;
+};
 
 void *proc(void *arg){
-	std::string substring = *(std::string*)arg;
+	char substring[((struct args*)arg)->size];
+	strcpy(substring,(char *)((struct args*)arg)->substring);
 	std::cout << substring << std::endl;
 }
 
@@ -15,6 +23,15 @@ void printUsgae(char * programName){
 
 bool isValidArgument(int n){
 	return n >= 2 && n <= 6 ? true : false;
+}
+
+void substring(char source[],char destination[], int position, int length){
+	int c = 0;
+	while(c < length){
+		destination[c] = source[position+c+1];
+		c++;	
+	}
+	source[c] = '\0';
 }
 
 int main(int argc, char * argv[]){
@@ -39,29 +56,37 @@ int main(int argc, char * argv[]){
 	
 	pthread_t id[n];
 	int r[n];
-	std::string key = "ABCDEFGHIJKLMNOPQRS";
-	std::string::iterator it;	
-	int i = 0;
-	for(it=key.begin(); it != key.end(); it++){
+	char key[] = "ABCDEFGHIJKLMNOPQRSTUVWYXZABCDEFGHIJKLMNOPQRSTUVWYXZABCDEFGH";
+	std::list<int> list;
+	int length = (int)sizeof(key)/sizeof(char);
+	for(int i = 0; i < length; i++){
 		if(i  % n == 0){
-			if( (i+n) < (int)key.capacity()){
-				std::string substring;
-				substring = key.substr(i,n);
-				//std::cout << substring << std::endl;
-				r[i] = pthread_create( &id[i], NULL, proc, (void *)&substring);
+			list.push_back(i);
+			if( (i+n) < length){
+				struct args *arg = (struct args *)malloc(sizeof(struct args));
+				char partition[n];
+				substring(key,partition,i,n);
+				arg->substring = partition;
+				arg->size = sizeof(partition);
+				pthread_create( &id[i], NULL, proc, (void*)arg);
+				std::cout << i << " ";
 			}else{
-				std::string substring;
-				substring = key.substr(i,(key.capacity() - i));
-				//std::cout << substring << std::endl;
-				r[i] = pthread_create( &id[i], NULL, proc, (void *)&substring);
+				struct args *arg = (struct args *)malloc(sizeof(struct args));
+				char partition[length - i];
+				substring(key,partition,i,(length - i));
+				arg->substring = partition;
+				arg->size = sizeof(partition);
+				pthread_create( &id[i], NULL, proc, (void*)arg);
+				std::cout << i << " ";
 			}
-		}
-		i++;
+		}	
 	}		
-	
-	for(int i=0; i < n; i++){
-		pthread_join(id[i], NULL);	
+	std::cout << std::endl;
+	for(int j : list){
+		std::cout << j << " ";
+		pthread_join(id[j], NULL) == 0 ? printf("thread %d: exited successfully\n", id[j]) : printf("thread %d: did not exit successfully\n", id[j]);	
 	}
+	std::cout << std::endl;
 
 	return 0;
 }
