@@ -12,9 +12,10 @@ struct args{
 };
 
 void *proc(void *arg){
-	char substring[((struct args*)arg)->size];
+	char substring[(int)((struct args*)arg)->size];
 	strcpy(substring,(char *)((struct args*)arg)->substring);
 	std::cout << substring << std::endl;
+	pthread_exit(NULL);
 }
 
 void printUsgae(char * programName){
@@ -55,6 +56,7 @@ int main(int argc, char * argv[]){
 	}
 	
 	pthread_t id[n];
+	struct args *arg;
 	int r[n];
 	char key[] = "ABCDEFGHIJKLMNOPQRSTUVWYXZABCDEFGHIJKLMNOPQRSTUVWYXZABCDEFGH";
 	std::list<int> list;
@@ -63,28 +65,25 @@ int main(int argc, char * argv[]){
 		if(i  % n == 0){
 			list.push_back(i);
 			if( (i+n) < length){
-				struct args *arg = (struct args *)malloc(sizeof(struct args));
+				arg = (struct args *)malloc(sizeof(struct args));
 				char partition[n];
 				substring(key,partition,i,n);
 				arg->substring = partition;
 				arg->size = sizeof(partition);
 				pthread_create( &id[i], NULL, proc, (void*)arg);
-				std::cout << i << " ";
 			}else{
-				struct args *arg = (struct args *)malloc(sizeof(struct args));
+				arg = (struct args *)malloc(sizeof(struct args));
 				char partition[length - i];
 				substring(key,partition,i,(length - i));
 				arg->substring = partition;
 				arg->size = sizeof(partition);
 				pthread_create( &id[i], NULL, proc, (void*)arg);
-				std::cout << i << " ";
 			}
 		}	
 	}		
 	std::cout << std::endl;
 	for(int j : list){
-		std::cout << j << " ";
-		pthread_join(id[j], NULL) == 0 ? printf("thread %d: exited successfully\n", id[j]) : printf("thread %d: did not exit successfully\n", id[j]);	
+		pthread_join(id[j], NULL); 
 	}
 	std::cout << std::endl;
 
