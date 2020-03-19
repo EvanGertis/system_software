@@ -18,7 +18,7 @@ void *proc(void *arg){
 	pthread_exit(NULL);
 }
 
-void printUsgae(char * programName){
+void printUsage(char * programName){
 	std::cout << "usage: " << programName << " <int> " << std::endl;
 }
 
@@ -39,7 +39,7 @@ int main(int argc, char * argv[]){
 	int n = 0;
 
 	if(argc != 2){
-		printUsgae(argv[0]);
+		printUsage(argv[0]);
 		return 0;
 	}
 
@@ -51,7 +51,7 @@ int main(int argc, char * argv[]){
 	}
 
 	if(!isValidArgument(n)){
-		printUsgae(argv[0]);
+		printUsage(argv[0]);
 		return 0;
 	}
 	
@@ -81,11 +81,9 @@ int main(int argc, char * argv[]){
 			}
 		}	
 	}		
-	std::cout << std::endl;
 	for(int j : list){
 		pthread_join(id[j], NULL); 
 	}
-	std::cout << std::endl;
 
 	return 0;
 }
