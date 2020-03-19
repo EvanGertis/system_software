@@ -5,16 +5,9 @@
 #include <stdlib.h> 
 #include <string.h>
 #include <stdio.h>
-#include <list>
-struct args{
-	int size;
-	char * substring;
-};
 
 void *proc(void *arg){
-	char substring[(int)((struct args*)arg)->size];
-	strcpy(substring,(char *)((struct args*)arg)->substring);
-	std::cout << substring << std::endl;
+	printf("%d", *(int *)arg);	
 	pthread_exit(NULL);
 }
 
@@ -26,14 +19,7 @@ bool isValidArgument(int n){
 	return n >= 2 && n <= 6 ? true : false;
 }
 
-void substring(char source[],char destination[], int position, int length){
-	int c = 0;
-	while(c < length){
-		destination[c] = source[position+c+1];
-		c++;	
-	}
-	source[c] = '\0';
-}
+char buffer[60];
 
 int main(int argc, char * argv[]){
 	int n = 0;
@@ -54,36 +40,17 @@ int main(int argc, char * argv[]){
 		printUsage(argv[0]);
 		return 0;
 	}
-	
+	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	pthread_t id[n];
-	struct args *arg;
-	int r[n];
-	char key[] = "ABCDEFGHIJKLMNOPQRSTUVWYXZABCDEFGHIJKLMNOPQRSTUVWYXZABCDEFGH";
-	std::list<int> list;
-	int length = (int)sizeof(key)/sizeof(char);
-	for(int i = 0; i < length; i++){
-		if(i  % n == 0){
-			list.push_back(i);
-			if( (i+n) < length){
-				arg = (struct args *)malloc(sizeof(struct args));
-				char partition[n];
-				substring(key,partition,i,n);
-				arg->substring = partition;
-				arg->size = sizeof(partition);
-				pthread_create( &id[i], NULL, proc, (void*)arg);
-			}else{
-				arg = (struct args *)malloc(sizeof(struct args));
-				char partition[length - i];
-				substring(key,partition,i,(length - i));
-				arg->substring = partition;
-				arg->size = sizeof(partition);
-				pthread_create( &id[i], NULL, proc, (void*)arg);
-			}
-		}	
-	}		
-	for(int j : list){
-		pthread_join(id[j], NULL); 
+	int * size = &n;
+	for (int i = 0; i < 60; ++i) {
+		buffer[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
 	}
-
+	for(int j = 0; j < n; j++){
+		pthread_create(&id[j], NULL, proc, (void *)size);
+	}
+	for(int k = 0; k < n; k++){
+		pthread_join(id[k],NULL);
+	}
 	return 0;
 }
