@@ -11,19 +11,14 @@ int size = 0;
 
 void *proc(void *arg){
 	long j = (long)arg;
-	//printf("%d\n", j);
-	//printf("start: %d\n", (int)((60/size)*(j-1)));
-	//printf("end: %d\n",  (int)((60/size)*j));
-	for(int i = ((60/size)*(j-1)); i < ((60/size)*j); i++){
-		printf("%c", (buffer[i] - 'a'));
-		buffer[i]= std::tolower((buffer[i] - 'a'));
-	}
-	printf("\n");
+	for(int i = ((60/size)*(j-1)); i < ((60/size)*j); i++)
+		buffer[i]= std::tolower((90-(buffer[i]+25)%90));
+	
 	pthread_exit(NULL);
 }
 
 void printUsage(char * programName){
-	std::cout << "usage: " << programName << " <int> " << std::endl;
+	printf("usage: %s <int> \n",programName);
 }
 
 bool isValidArgument(int n){
@@ -48,6 +43,7 @@ int main(int argc, char * argv[]){
 		return 0;
 	}
 
+	printf("using: %d threads\n", size);
 
 	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";	
 	for (int i = 0; i < 60; i++)
@@ -62,7 +58,7 @@ int main(int argc, char * argv[]){
 	for(int k = 1; k < size+1; k++)
 		pthread_join(id[k],NULL);
 	
-	printf("complementary lower case string:: %s\n", buffer);
+	printf("complementary lower case string: %s\n", buffer);
 	
 	return 0;
 }
