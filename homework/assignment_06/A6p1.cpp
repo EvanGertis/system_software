@@ -6,8 +6,19 @@
 #include <string.h>
 #include <stdio.h>
 
+char buffer[60];
+int size = 0;
+
 void *proc(void *arg){
-	printf("%d", *(int *)arg);	
+	long j = (long)arg;
+	//printf("%d\n", j);
+	//printf("start: %d\n", (int)((60/size)*(j-1)));
+	//printf("end: %d\n",  (int)((60/size)*j));
+	for(int i = ((60/size)*(j-1)); i < ((60/size)*j); i++){
+		printf("%c", (buffer[i] - 'a'));
+		buffer[i]= std::tolower((buffer[i] - 'a'));
+	}
+	printf("\n");
 	pthread_exit(NULL);
 }
 
@@ -19,38 +30,39 @@ bool isValidArgument(int n){
 	return n >= 2 && n <= 6 ? true : false;
 }
 
-char buffer[60];
-
 int main(int argc, char * argv[]){
-	int n = 0;
-
 	if(argc != 2){
 		printUsage(argv[0]);
 		return 0;
 	}
 
 	try{
-		n = atoi(argv[1]);
+		size = atoi(argv[1]);
 
 	}catch(std::exception e){
 		std::cout << e.what() << std::endl;
 	}
 
-	if(!isValidArgument(n)){
+	if(!isValidArgument(size)){
 		printUsage(argv[0]);
 		return 0;
 	}
-	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	pthread_t id[n];
-	int * size = &n;
-	for (int i = 0; i < 60; ++i) {
+
+
+	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";	
+	for (int i = 0; i < 60; i++)
 		buffer[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
-	}
-	for(int j = 0; j < n; j++){
-		pthread_create(&id[j], NULL, proc, (void *)size);
-	}
-	for(int k = 0; k < n; k++){
+
+	printf("original upper case string: %s\n", buffer);
+
+	pthread_t id[size];
+	for(int j = 1; j < (size+1); j++)
+		pthread_create(&id[j], NULL, proc, (void *)(long)j);
+
+	for(int k = 1; k < size+1; k++)
 		pthread_join(id[k],NULL);
-	}
+	
+	printf("complementary lower case string:: %s\n", buffer);
+	
 	return 0;
 }
