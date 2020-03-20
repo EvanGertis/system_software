@@ -44,7 +44,8 @@ int main(int argc, char * argv[]){
 	}
 
 	printf("using: %d threads\n", size);
-
+	
+	srand ( time(NULL) );
 	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";	
 	for (int i = 0; i < 60; i++)
 		buffer[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
