@@ -11,7 +11,8 @@ int size = 0;
 
 void *proc(void *arg){
 	long j = (long)arg;
-	for(int i = ((60/size)*(j-1)); i < ((60/size)*j); i++)
+	int n = sizeof(buffer)/sizeof(char);
+	for(int i = ((n/size)*(j-1)); i < ((n/size)*j); i++)
 		buffer[i]= std::tolower((90-(buffer[i]+25)%90));
 	
 	pthread_exit(NULL);
@@ -45,12 +46,15 @@ int main(int argc, char * argv[]){
 
 	printf("using: %d threads\n", size);
 	
-	srand ( time(NULL) );
+	srand(time(0));
 	char alphanum[] ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";	
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < sizeof(buffer)/sizeof(char); i++)
 		buffer[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
 
-	printf("original upper case string: %s\n", buffer);
+	printf("original upper case string: ");
+	for(int i = 0; i < sizeof(buffer)/sizeof(char); i++)
+		printf("%c", buffer[i]);
+	printf("\n");
 
 	pthread_t id[size];
 	for(int j = 1; j < (size+1); j++)
@@ -59,7 +63,10 @@ int main(int argc, char * argv[]){
 	for(int k = 1; k < size+1; k++)
 		pthread_join(id[k],NULL);
 	
-	printf("complementary lower case string: %s\n", buffer);
+	printf("complementary lower case string: ");
+	for(int i = 0; i < sizeof(buffer)/sizeof(char); i++)
+		printf("%c", buffer[i]);
+	printf("\n");
 	
 	return 0;
 }
