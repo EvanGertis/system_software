@@ -1,0 +1,12 @@
+1. The possible outputs of RaceOrNot1 are the following
+	a a
+	a b
+	b a
+	b b
+2. The possible outputs of RaceOrNot2 are the following
+	a a
+	a b
+	b a
+	b b
+3. The possible outputs of RaceOrNot3 are the following
+	a b
